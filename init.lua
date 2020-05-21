@@ -61,7 +61,9 @@ local function handleChatLoot(self, event, msg)
         end
     end
 end
-
+--------------------------------------
+-- End custom Obliv
+--------------------------------------
 --------------------------------------
 -- Slash Command
 --------------------------------------
@@ -136,7 +138,6 @@ MonDKP.Commands = {
                 return
             end
             item = name .. " " .. item;
-
             MonDKP:AwardConfirm(nil, 0, MonDKP_DB.bossargs.LastKilledBoss, MonDKP_DB.bossargs.CurrentRaidZone, item)
         else
             MonDKP:Print(L["NOPERMISSION"])
@@ -198,21 +199,26 @@ MonDKP.Commands = {
         MonDKP:Print("|cff00cc66!dkp (or !dkp <" .. L["PLAYERNAME"] .. ">)|r - " .. L["DKPCMDHELP"]);
     end,
     ["addreroll"] = function(playerName, rerollName)
-        if playerName and rerollName and rerollName ~= playerName then
-            local search = MonDKP:Table_Search(MonDKP_DKPTable, playerName)
-            if search then
-                if MonDKP_DKPTable[search[1][1]].rerolls then
-                    if has_value(MonDKP_DKPTable[search[1][1]].rerolls, rerollName) then
+        if core.IsOfficer and core.Initialized then
+            if playerName and rerollName and rerollName ~= playerName then
+                local search = MonDKP:Table_Search(MonDKP_DKPTable, playerName)
+                if search then
+                    if MonDKP_DKPTable[search[1][1]].rerolls then
+                        if has_value(MonDKP_DKPTable[search[1][1]].rerolls, rerollName) then
+                        else
+                            table.insert(MonDKP_DKPTable[search[1][1]].rerolls, rerollName)
+                        end
                     else
-                        table.insert(MonDKP_DKPTable[search[1][1]].rerolls, rerollName)
+                        MonDKP_DKPTable[search[1][1]].rerolls = { rerollName }
                     end
                 else
-                    MonDKP_DKPTable[search[1][1]].rerolls = { rerollName }
+                    print("Player not found");
                 end
-            else
-                print("Player not found");
             end
+        else
+            MonDKP:Print(L["NOPERMISSION"])
         end
+
     end,
 };
 
