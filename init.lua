@@ -753,4 +753,5 @@ events:RegisterEvent("GUILD_ROSTER_UPDATE")
 events:RegisterEvent("PLAYER_ENTERING_WORLD")
 events:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 events:RegisterEvent("BOSS_KILL")
+events:RegisterEvent("CHAT_MSG_LOOT")
 events:SetScript("OnEvent", MonDKP_OnEvent); -- calls the above MonDKP_OnEvent function to determine what to do with the event
