@@ -23,7 +23,7 @@ Officer only features
 	- Right click context menu in Loot History to reassign items (if minds are changed after awarding) which will subsequently give the DKP cost back to the initial owner and charge it to the new recipient  
 	- Boss Kill Bonus auto selects the last killed boss/zone  
 	- Options window has additional fields to set bonus defaults (On time bonus, boss kill bonus etc)  
-  
+
 Redundencies  
 	- All entries can only be edited / added by officers in the guild (this is determined by checking Officer Note Writing permissions).  
 	- If the addon is modified to grant a player access to the options available only to officers, attempting to broadcast a modified table will notify officers of this action.  
