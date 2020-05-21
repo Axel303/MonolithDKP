@@ -197,6 +197,19 @@ MonDKP.Commands = {
         MonDKP:Print("|cff00cc66!bid (or !bid <" .. L["VALUE"] .. ">)|r - " .. L["BIDHELP"]);
         MonDKP:Print("|cff00cc66!dkp (or !dkp <" .. L["PLAYERNAME"] .. ">)|r - " .. L["DKPCMDHELP"]);
     end,
+    ["addreroll"] = function(playerName, rerollName)
+        if playerName and rerollName and rerollName ~= playerName then
+            local search = MonDKP:Table_Search(MonDKP_DKPTable, playerName)
+            if MonDKP_DKPTable[search[1][1]].reroll then
+                if has_value(MonDKP_DKPTable[search[1][1]].reroll, rerollName) then
+                else
+                    table.insert(MonDKP_DKPTable[search[1][1]].reroll, rerollName)
+                end
+            else
+                MonDKP_DKPTable[search[1][1]].reroll = { rerollName }
+            end
+        end
+    end,
 };
 
 local function HandleSlashCommands(str)
