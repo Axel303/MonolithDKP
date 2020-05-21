@@ -555,184 +555,181 @@ function MonDKP_OnEvent(self, event, arg1, ...)
         end
     end
 end
-
-end
-
 function MonDKP:OnInitialize(event, name)
--- This is the FIRST function to run on load triggered registered events at bottom of file
-if (name ~= "MonolithDKP") then
-return
-end
+    -- This is the FIRST function to run on load triggered registered events at bottom of file
+    if (name ~= "MonolithDKP") then
+        return
+    end
 
--- allows using left and right buttons to move through chat 'edit' box
---[[for i = 1, NUM_CHAT_WINDOWS do
-    _G["ChatFrame"..i.."EditBox"]:SetAltArrowKeyMode(false);
-end--]]
+    -- allows using left and right buttons to move through chat 'edit' box
+    --[[for i = 1, NUM_CHAT_WINDOWS do
+        _G["ChatFrame"..i.."EditBox"]:SetAltArrowKeyMode(false);
+    end--]]
 
-----------------------------------
--- Register Slash Commands
-----------------------------------
-SLASH_MonolithDKP1 = "/dkp";
-SLASH_MonolithDKP2 = "/mondkp";
-SlashCmdList.MonolithDKP = HandleSlashCommands;
+    ----------------------------------
+    -- Register Slash Commands
+    ----------------------------------
+    SLASH_MonolithDKP1 = "/dkp";
+    SLASH_MonolithDKP2 = "/mondkp";
+    SlashCmdList.MonolithDKP = HandleSlashCommands;
 
---[[SLASH_RELOADUI1 = "/rl"; -- new slash command for reloading UI 				-- for debugging
-SlashCmdList.RELOADUI = ReloadUI;--]]
+    --[[SLASH_RELOADUI1 = "/rl"; -- new slash command for reloading UI 				-- for debugging
+    SlashCmdList.RELOADUI = ReloadUI;--]]
 
-SLASH_FRAMESTK1 = "/fs"; -- new slash command for showing framestack tool
-SlashCmdList.FRAMESTK = function ()
-LoadAddOn("Blizzard_DebugTools");
-FrameStackTooltip_Toggle();
-end
+    SLASH_FRAMESTK1 = "/fs"; -- new slash command for showing framestack tool
+    SlashCmdList.FRAMESTK = function()
+        LoadAddOn("Blizzard_DebugTools");
+        FrameStackTooltip_Toggle();
+    end
 
-if (event == "ADDON_LOADED") then
-core.Initialized = false
-core.InitStart = false
-core.IsOfficer = nil
-C_Timer.After(5, function ()
-core.MonDKPUI = MonDKP.UIConfig or MonDKP:CreateMenu();        -- creates main menu after 5 seconds (trying to initialize after raid frames are loaded)
-end )
-if not MonDKP_DKPTable then
-MonDKP_DKPTable = {}
-end ;
-if not MonDKP_Loot then
-MonDKP_Loot = {}
-end ;
-if not MonDKP_DKPHistory then
-MonDKP_DKPHistory = {}
-end ;
-if not MonDKP_MinBids then
-MonDKP_MinBids = {}
-end ;
-if not MonDKP_MaxBids then
-MonDKP_MaxBids = {}
-end ;
-if not MonDKP_Whitelist then
-MonDKP_Whitelist = {}
-end ;
-if not MonDKP_Standby then
-MonDKP_Standby = {}
-end ;
-if not MonDKP_Archive then
-MonDKP_Archive = {}
-end ;
-if not MonDKP_DB then
-MonDKP_DB = {}
-end
-if not MonDKP_DB.DKPBonus or not MonDKP_DB.DKPBonus.OnTimeBonus then
-MonDKP_DB.DKPBonus = {
-OnTimeBonus = 15, BossKillBonus = 5, CompletionBonus = 10, NewBossKillBonus = 10, UnexcusedAbsence = -25, BidTimer = 30, DecayPercentage = 20, GiveRaidStart = false, IncStandby = false,
-}
-end
-if not MonDKP_DB.defaults or not MonDKP_DB.defaults.HistoryLimit then
-MonDKP_DB.defaults = {
-HistoryLimit = 2500, DKPHistoryLimit = 2500, BidTimerSize = 1.0, MonDKPScaleSize = 1.0, supressNotifications = false, TooltipHistoryCount = 15, SupressTells = true,
-}
-end
-if not MonDKP_DB.defaults.ChatFrames then
-MonDKP_DB.defaults.ChatFrames = {}
-for i = 1, NUM_CHAT_WINDOWS do
-local name = GetChatWindowInfo(i)
+    if (event == "ADDON_LOADED") then
+        core.Initialized = false
+        core.InitStart = false
+        core.IsOfficer = nil
+        C_Timer.After(5, function()
+            core.MonDKPUI = MonDKP.UIConfig or MonDKP:CreateMenu();        -- creates main menu after 5 seconds (trying to initialize after raid frames are loaded)
+        end)
+        if not MonDKP_DKPTable then
+            MonDKP_DKPTable = {}
+        end ;
+        if not MonDKP_Loot then
+            MonDKP_Loot = {}
+        end ;
+        if not MonDKP_DKPHistory then
+            MonDKP_DKPHistory = {}
+        end ;
+        if not MonDKP_MinBids then
+            MonDKP_MinBids = {}
+        end ;
+        if not MonDKP_MaxBids then
+            MonDKP_MaxBids = {}
+        end ;
+        if not MonDKP_Whitelist then
+            MonDKP_Whitelist = {}
+        end ;
+        if not MonDKP_Standby then
+            MonDKP_Standby = {}
+        end ;
+        if not MonDKP_Archive then
+            MonDKP_Archive = {}
+        end ;
+        if not MonDKP_DB then
+            MonDKP_DB = {}
+        end
+        if not MonDKP_DB.DKPBonus or not MonDKP_DB.DKPBonus.OnTimeBonus then
+            MonDKP_DB.DKPBonus = {
+                OnTimeBonus = 15, BossKillBonus = 5, CompletionBonus = 10, NewBossKillBonus = 10, UnexcusedAbsence = -25, BidTimer = 30, DecayPercentage = 20, GiveRaidStart = false, IncStandby = false,
+            }
+        end
+        if not MonDKP_DB.defaults or not MonDKP_DB.defaults.HistoryLimit then
+            MonDKP_DB.defaults = {
+                HistoryLimit = 2500, DKPHistoryLimit = 2500, BidTimerSize = 1.0, MonDKPScaleSize = 1.0, supressNotifications = false, TooltipHistoryCount = 15, SupressTells = true,
+            }
+        end
+        if not MonDKP_DB.defaults.ChatFrames then
+            MonDKP_DB.defaults.ChatFrames = {}
+            for i = 1, NUM_CHAT_WINDOWS do
+                local name = GetChatWindowInfo(i)
 
-if name ~= "" then
-MonDKP_DB.defaults.ChatFrames[name] = true
-end
-end
-end
-if not MonDKP_DB.raiders then
-MonDKP_DB.raiders = {}
-end
-if not MonDKP_DB.MinBidBySlot or not MonDKP_DB.MinBidBySlot.Head then
-MonDKP_DB.MinBidBySlot = {
-Head = 70, Neck = 70, Shoulders = 70, Cloak = 70, Chest = 70, Bracers = 70, Hands = 70, Belt = 70, Legs = 70, Boots = 70, Ring = 70, Trinket = 70, OneHanded = 70, TwoHanded = 70, OffHand = 70, Range = 70, Other = 70,
-}
-end
-if not MonDKP_DB.MaxBidBySlot or not MonDKP_DB.MaxBidBySlot.Head then
-MonDKP_DB.MaxBidBySlot = {
-Head = 0, Neck = 0, Shoulders = 0, Cloak = 0, Chest = 0, Bracers = 0, Hands = 0, Belt = 0, Legs = 0, Boots = 0, Ring = 0, Trinket = 0, OneHanded = 0, TwoHanded = 0, OffHand = 0, Range = 0, Other = 0,
-}
-end
-if not MonDKP_DB.bossargs then
-MonDKP_DB.bossargs = { CurrentRaidZone = "Molten Core", LastKilledBoss = "Lucifron" }
-end
-if not MonDKP_DB.modes or not MonDKP_DB.modes.mode then
-MonDKP_DB.modes = { mode = "Minimum Bid Values", SubZeroBidding = false, rounding = 0, AddToNegative = false, increment = 60, ZeroSumBidType = "Static", AllowNegativeBidders = false }
-end ;
-if not MonDKP_DB.modes.ZeroSumBank then
-MonDKP_DB.modes.ZeroSumBank = { balance = 0 }
-end
-if not MonDKP_DB.modes.channels then
-MonDKP_DB.modes.channels = { raid = true, whisper = true, guild = true }
-end
-if not MonDKP_DB.modes.costvalue then
-MonDKP_DB.modes.costvalue = "Integer"
-end
-if not MonDKP_DB.modes.rolls or not MonDKP_DB.modes.rolls.min then
-MonDKP_DB.modes.rolls = { min = 1, max = 100, UsePerc = false, AddToMax = 0 }
-end
-if not MonDKP_DB.bossargs.LastKilledNPC then
-MonDKP_DB.bossargs.LastKilledNPC = {}
-end
-if not MonDKP_DB.bossargs.RecentZones then
-MonDKP_DB.bossargs.RecentZones = {}
-end
-if not MonDKP_DB.defaults.HideChangeLogs then
-MonDKP_DB.defaults.HideChangeLogs = 0
-end
-if not MonDKP_DB.modes.AntiSnipe then
-MonDKP_DB.modes.AntiSnipe = 0
-end
-if not MonDKP_DB.defaults.CurrentGuild then
-MonDKP_DB.defaults.CurrentGuild = {}
-end
-if not MonDKP_DKPHistory.seed then
-MonDKP_DKPHistory.seed = 0
-end
-if not MonDKP_Loot.seed then
-MonDKP_Loot.seed = 0
-end
-if MonDKP_DKPTable.seed then
-MonDKP_DKPTable.seed = nil
-end
-if MonDKP_Meta then
-MonDKP_Meta = nil
-end
-if MonDKP_Meta_Remote then
-MonDKP_Meta_Remote = nil
-end
-if MonDKP_Archive_Meta then
-MonDKP_Archive_Meta = nil
-end
-if MonDKP_Errant then
-MonDKP_Errant = nil
-end
+                if name ~= "" then
+                    MonDKP_DB.defaults.ChatFrames[name] = true
+                end
+            end
+        end
+        if not MonDKP_DB.raiders then
+            MonDKP_DB.raiders = {}
+        end
+        if not MonDKP_DB.MinBidBySlot or not MonDKP_DB.MinBidBySlot.Head then
+            MonDKP_DB.MinBidBySlot = {
+                Head = 70, Neck = 70, Shoulders = 70, Cloak = 70, Chest = 70, Bracers = 70, Hands = 70, Belt = 70, Legs = 70, Boots = 70, Ring = 70, Trinket = 70, OneHanded = 70, TwoHanded = 70, OffHand = 70, Range = 70, Other = 70,
+            }
+        end
+        if not MonDKP_DB.MaxBidBySlot or not MonDKP_DB.MaxBidBySlot.Head then
+            MonDKP_DB.MaxBidBySlot = {
+                Head = 0, Neck = 0, Shoulders = 0, Cloak = 0, Chest = 0, Bracers = 0, Hands = 0, Belt = 0, Legs = 0, Boots = 0, Ring = 0, Trinket = 0, OneHanded = 0, TwoHanded = 0, OffHand = 0, Range = 0, Other = 0,
+            }
+        end
+        if not MonDKP_DB.bossargs then
+            MonDKP_DB.bossargs = { CurrentRaidZone = "Molten Core", LastKilledBoss = "Lucifron" }
+        end
+        if not MonDKP_DB.modes or not MonDKP_DB.modes.mode then
+            MonDKP_DB.modes = { mode = "Minimum Bid Values", SubZeroBidding = false, rounding = 0, AddToNegative = false, increment = 60, ZeroSumBidType = "Static", AllowNegativeBidders = false }
+        end ;
+        if not MonDKP_DB.modes.ZeroSumBank then
+            MonDKP_DB.modes.ZeroSumBank = { balance = 0 }
+        end
+        if not MonDKP_DB.modes.channels then
+            MonDKP_DB.modes.channels = { raid = true, whisper = true, guild = true }
+        end
+        if not MonDKP_DB.modes.costvalue then
+            MonDKP_DB.modes.costvalue = "Integer"
+        end
+        if not MonDKP_DB.modes.rolls or not MonDKP_DB.modes.rolls.min then
+            MonDKP_DB.modes.rolls = { min = 1, max = 100, UsePerc = false, AddToMax = 0 }
+        end
+        if not MonDKP_DB.bossargs.LastKilledNPC then
+            MonDKP_DB.bossargs.LastKilledNPC = {}
+        end
+        if not MonDKP_DB.bossargs.RecentZones then
+            MonDKP_DB.bossargs.RecentZones = {}
+        end
+        if not MonDKP_DB.defaults.HideChangeLogs then
+            MonDKP_DB.defaults.HideChangeLogs = 0
+        end
+        if not MonDKP_DB.modes.AntiSnipe then
+            MonDKP_DB.modes.AntiSnipe = 0
+        end
+        if not MonDKP_DB.defaults.CurrentGuild then
+            MonDKP_DB.defaults.CurrentGuild = {}
+        end
+        if not MonDKP_DKPHistory.seed then
+            MonDKP_DKPHistory.seed = 0
+        end
+        if not MonDKP_Loot.seed then
+            MonDKP_Loot.seed = 0
+        end
+        if MonDKP_DKPTable.seed then
+            MonDKP_DKPTable.seed = nil
+        end
+        if MonDKP_Meta then
+            MonDKP_Meta = nil
+        end
+        if MonDKP_Meta_Remote then
+            MonDKP_Meta_Remote = nil
+        end
+        if MonDKP_Archive_Meta then
+            MonDKP_Archive_Meta = nil
+        end
+        if MonDKP_Errant then
+            MonDKP_Errant = nil
+        end
 
-------------------------------------
---	Import SavedVariables
-------------------------------------
-core.WorkingTable = MonDKP_DKPTable;                        -- imports full DKP table to WorkingTable for list manipulation
-core.CurrentRaidZone = MonDKP_DB.bossargs.CurrentRaidZone;    -- stores raid zone as a redundency
-core.LastKilledBoss = MonDKP_DB.bossargs.LastKilledBoss;    -- stores last boss killed as a redundency
-core.LastKilledNPC = MonDKP_DB.bossargs.LastKilledNPC        -- Stores last 30 mobs killed in raid.
-core.RecentZones = MonDKP_DB.bossargs.RecentZones        -- Stores last 30 zones entered within a raid party.
+        ------------------------------------
+        --	Import SavedVariables
+        ------------------------------------
+        core.WorkingTable = MonDKP_DKPTable;                        -- imports full DKP table to WorkingTable for list manipulation
+        core.CurrentRaidZone = MonDKP_DB.bossargs.CurrentRaidZone;    -- stores raid zone as a redundency
+        core.LastKilledBoss = MonDKP_DB.bossargs.LastKilledBoss;    -- stores last boss killed as a redundency
+        core.LastKilledNPC = MonDKP_DB.bossargs.LastKilledNPC        -- Stores last 30 mobs killed in raid.
+        core.RecentZones = MonDKP_DB.bossargs.RecentZones        -- Stores last 30 zones entered within a raid party.
 
-table.sort(MonDKP_DKPTable, function (a, b)
-return a["player"] < b["player"]
-end )
+        table.sort(MonDKP_DKPTable, function(a, b)
+            return a["player"] < b["player"]
+        end)
 
-MonDKP:StartBidTimer("seconds", nil)                        -- initiates timer frame for use
+        MonDKP:StartBidTimer("seconds", nil)                        -- initiates timer frame for use
 
-if MonDKP.BidTimer then
-MonDKP.BidTimer:SetScript("OnUpdate", nil)
-end
+        if MonDKP.BidTimer then
+            MonDKP.BidTimer:SetScript("OnUpdate", nil)
+        end
 
-if #MonDKP_Loot > MonDKP_DB.defaults.HistoryLimit then
-MonDKP:PurgeLootHistory()                                    -- purges Loot History entries that exceed the "HistoryLimit" option variable (oldest entries) and populates MonDKP_Archive with deleted values
-end
-if #MonDKP_DKPHistory > MonDKP_DB.defaults.DKPHistoryLimit then
-MonDKP:PurgeDKPHistory()                                    -- purges DKP History entries that exceed the "DKPHistoryLimit" option variable (oldest entries) and populates MonDKP_Archive with deleted values
-end
-end
+        if #MonDKP_Loot > MonDKP_DB.defaults.HistoryLimit then
+            MonDKP:PurgeLootHistory()                                    -- purges Loot History entries that exceed the "HistoryLimit" option variable (oldest entries) and populates MonDKP_Archive with deleted values
+        end
+        if #MonDKP_DKPHistory > MonDKP_DB.defaults.DKPHistoryLimit then
+            MonDKP:PurgeDKPHistory()                                    -- purges DKP History entries that exceed the "DKPHistoryLimit" option variable (oldest entries) and populates MonDKP_Archive with deleted values
+        end
+    end
 end
 
 ----------------------------------
