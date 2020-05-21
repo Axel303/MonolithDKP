@@ -200,13 +200,17 @@ MonDKP.Commands = {
     ["addreroll"] = function(playerName, rerollName)
         if playerName and rerollName and rerollName ~= playerName then
             local search = MonDKP:Table_Search(MonDKP_DKPTable, playerName)
-            if MonDKP_DKPTable[search[1][1]].reroll then
-                if has_value(MonDKP_DKPTable[search[1][1]].reroll, rerollName) then
+            if search then
+                if MonDKP_DKPTable[search[1][1]].rerolls then
+                    if has_value(MonDKP_DKPTable[search[1][1]].rerolls, rerollName) then
+                    else
+                        table.insert(MonDKP_DKPTable[search[1][1]].rerolls, rerollName)
+                    end
                 else
-                    table.insert(MonDKP_DKPTable[search[1][1]].reroll, rerollName)
+                    MonDKP_DKPTable[search[1][1]].rerolls = { rerollName }
                 end
             else
-                MonDKP_DKPTable[search[1][1]].reroll = { rerollName }
+                print("Player not found");
             end
         end
     end,
