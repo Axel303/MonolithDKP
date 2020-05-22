@@ -188,29 +188,7 @@ MonDKP.Commands = {
         MonDKP:Print(L["WHISPERCMDSHELP"]);
         MonDKP:Print("|cff00cc66!bid (or !bid <" .. L["VALUE"] .. ">)|r - " .. L["BIDHELP"]);
         MonDKP:Print("|cff00cc66!dkp (or !dkp <" .. L["PLAYERNAME"] .. ">)|r - " .. L["DKPCMDHELP"]);
-    end,
-    ["addreroll"] = function(playerName, rerollName)
-        if core.IsOfficer and core.Initialized then
-            if playerName and rerollName and rerollName ~= playerName then
-                local search = MonDKP:Table_Search(MonDKP_DKPTable, playerName)
-                if search then
-                    if MonDKP_DKPTable[search[1][1]].rerolls then
-                        if MonDKP:has_value(MonDKP_DKPTable[search[1][1]].rerolls, rerollName) then
-                        else
-                            table.insert(MonDKP_DKPTable[search[1][1]].rerolls, rerollName)
-                        end
-                    else
-                        MonDKP_DKPTable[search[1][1]].rerolls = { rerollName }
-                    end
-                else
-                    print("Player not found");
-                end
-            end
-        else
-            MonDKP:Print(L["NOPERMISSION"])
-        end
-
-    end,
+    end   
 };
 
 local function HandleSlashCommands(str)
