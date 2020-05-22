@@ -721,3 +721,12 @@ function MonDKP:DKPTable_Set(tar, field, value, loot)                -- updates 
 	end
 	DKPTable_Update()
 end
+
+function MonDKP:has_value  (tab, val)
+	for index, value in ipairs(tab) do
+		if value == val then
+			return true
+		end
+	end
+	return false
+end

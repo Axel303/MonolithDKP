@@ -9,16 +9,6 @@ local lockouts = CreateFrame("Frame", "LockoutsFrame");
 -- Custom Obliv
 --------------------------------------
 
-local function has_value (tab, val)
-    for index, value in ipairs(tab) do
-        if value == val then
-            return true
-        end
-    end
-
-    return false
-end
-
 local function extractPlayerName(msg)
     playerName = strsplit(" ", msg, 3)
     if playerName == "You" or playerName == "Vous" then
@@ -42,7 +32,8 @@ local function extractItemId(msg)
     return itemId;
 end
 
-local function handleChatLoot(self, event, msg)
+local function handleChatLoot(self, eve
+nt, msg)
 
     local availableItemsType = { 2, 4 };
 
@@ -50,13 +41,13 @@ local function handleChatLoot(self, event, msg)
 
     local currentInstanceIId = select(8, GetInstanceInfo());
 
-    local isAvailableInstanceIId = has_value(availableInstanceIId, currentInstanceIId);
+    local isAvailableInstanceIId = MonDKP:has_value(availableInstanceIId, currentInstanceIId);
 
     if isAvailableInstanceIId == true then
         local playerName = extractPlayerName(msg);
         local itemId = extractItemId(msg);
         local _, itemLink, quality, ilvl, _, _, _, _, _, _, _, itemClassId = GetItemInfo(itemId);
-        if quality == 4 and has_value(availableItemsType, itemClassId) then
+        if quality == 4 and MonDKP:has_value(availableItemsType, itemClassId) then
             runSlashCmd("/dkp awardauto " .. itemId .. " " .. playerName .. " " .. ilvl);
         end
     end
@@ -204,7 +195,7 @@ MonDKP.Commands = {
                 local search = MonDKP:Table_Search(MonDKP_DKPTable, playerName)
                 if search then
                     if MonDKP_DKPTable[search[1][1]].rerolls then
-                        if has_value(MonDKP_DKPTable[search[1][1]].rerolls, rerollName) then
+                        if MonDKP:has_value(MonDKP_DKPTable[search[1][1]].rerolls, rerollName) then
                         else
                             table.insert(MonDKP_DKPTable[search[1][1]].rerolls, rerollName)
                         end
