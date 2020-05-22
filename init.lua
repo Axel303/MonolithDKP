@@ -32,8 +32,7 @@ local function extractItemId(msg)
     return itemId;
 end
 
-local function handleChatLoot(self, eve
-nt, msg)
+local function handleChatLoot(self, event, msg)
 
     local availableItemsType = { 2, 4 };
 
@@ -188,7 +187,18 @@ MonDKP.Commands = {
         MonDKP:Print(L["WHISPERCMDSHELP"]);
         MonDKP:Print("|cff00cc66!bid (or !bid <" .. L["VALUE"] .. ">)|r - " .. L["BIDHELP"]);
         MonDKP:Print("|cff00cc66!dkp (or !dkp <" .. L["PLAYERNAME"] .. ">)|r - " .. L["DKPCMDHELP"]);
-    end   
+    end,
+    ["addtoraid"] = function(dkp)
+        if dkp then
+            local playersName = {}
+            for i = 1, GetNumGroupMembers() do
+                local playerName = GetRaidRosterInfo(i);
+                table.insert(playersName, { player = playerName })
+            end
+            MonDKP:AdjustDKPPlayersName(dkp, playersName)
+        end
+        
+    end
 };
 
 local function HandleSlashCommands(str)
